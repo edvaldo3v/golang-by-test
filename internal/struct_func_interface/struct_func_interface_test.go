@@ -11,9 +11,9 @@ func TestPerimeter(t *testing.T) {
 		}
 	}
 
-	verifyArea := func(t *testing.T, forma Forma, expected float64) {
+	verifyArea := func(t *testing.T, shape Shape, expected float64) {
 		t.Helper()
-		result := forma.Area()
+		result := shape.Area()
 
 		if result != expected {
 			t.Errorf("resultado %.2f, esperado %.2f", result, expected)
@@ -48,6 +48,28 @@ func TestPerimeter(t *testing.T) {
 
 			verifyResult(t, result, expected)
 		})
+	})
+
+	t.Run("anonimus struct", func(t *testing.T) {
+		testsArea := []struct {
+			name     string
+			shape    Shape
+			expected float64
+		}{
+			{name: "Rectangle", shape: Rectangle{12.0, 6.0}, expected: 72.0},
+			{name: "Circle", shape: Circle{ray: 10}, expected: 314.1592653589793},
+			{name: "Triangle", shape: Trianglw{12.0, 6.0}, expected: 36.0},
+		}
+
+		for _, tt := range testsArea {
+			t.Run(tt.name, func(t *testing.T) {
+				result := tt.shape.Area()
+				if result != tt.expected {
+					t.Errorf("resultado %.2f, esperado %.2f", result, tt.expected)
+				}
+			})
+
+		}
 	})
 
 }
